@@ -11,12 +11,11 @@
 
 const http = require('http')
 
-// const routes = require('./assignments/assignmentOne')
-const routes = require('./assignments/assignmentOne')
+const routes = require('./routes')
 
 //node will execute the function inside of createServer whenever a request
 //reaches the server. this function can ever be (req, res) => console.log(req, res)
-const server = http.createServer(routes.requestHandler)
+const server = http.createServer(routes)
 
 //listen for incoming requests at port 3000. Can define a host name here
 server.listen(3000)
