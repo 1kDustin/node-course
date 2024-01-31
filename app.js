@@ -17,27 +17,31 @@ It will also buffer chunks for you as well
 //if we want to create a response that will trigger on every request, we want to give a path of '/',
 //because this means it will run for any url that starts with '/'
 
-const express = require('express')
+//app.use will work for all request methods (e.g. get, post, ..)
 
-const http = require('http')
+const express = require('express')
+const bodyParser = require('body-parser')
 
 // this creates the express application
 const app = express()
 
-app.use('/', (req, res, next) => {
-    console.log('This will run on every request')
-    next()
-})
+//register our parser at the top. this will not parse files
+app.use(bodyParser.urlencoded({extended: false}))
 
-app.use('/add-product', (req, res, next) => {
-    console.log('In the next middleware')
+//this will submit some text from the input which will send us to /product, which will trigger and log the body of the request, then redirect us back to '/'
+app.use('/add-product', (req, res) => {
     //allows us to send a response. If we are using send, we never want to call next(),
     //because if we are sending a response, we dont want to send another response
-    res.send('<h1>Add Product Page</h1>')
+    res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</button></form>')
  })
 
+ //log the request body then redirect back to the home '/'. this will only run for incoming post requests
+app.post('/product', (req, res) => {
+    console.log(req.body)
+    res.redirect('/')
+})
+
 app.use('/', (req, res, next) => {
-    console.log('In the next middleware')
     //allows us to send a response
     res.send('<h1>Hello from express</h1>')
  })
