@@ -25,21 +25,14 @@ const bodyParser = require('body-parser')
 // this creates the express application
 const app = express()
 
+const adminRouter = require('./routes/admin')
+const shopRouter = require('./routes/shop')
+
 //register our parser at the top. this will not parse files
 app.use(bodyParser.urlencoded({extended: false}))
 
-//this will submit some text from the input which will send us to /product, which will trigger and log the body of the request, then redirect us back to '/'
-app.use('/add-product', (req, res) => {
-    //allows us to send a response. If we are using send, we never want to call next(),
-    //because if we are sending a response, we dont want to send another response
-    res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</button></form>')
- })
-
- //log the request body then redirect back to the home '/'. this will only run for incoming post requests
-app.post('/product', (req, res) => {
-    console.log(req.body)
-    res.redirect('/')
-})
+app.use(adminRouter)
+app.use(shopRouter)
 
 app.use('/', (req, res, next) => {
     //allows us to send a response
