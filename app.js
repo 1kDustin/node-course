@@ -34,10 +34,10 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(adminRouter)
 app.use(shopRouter)
 
-app.use('/', (req, res, next) => {
-    //allows us to send a response
-    res.send('<h1>Hello from express</h1>')
- })
+//if url doesnt exist, return a 404 status code with some html
+app.use((req, res, next) => {
+    res.status(404).send('<h1>Page not found</h1>')
+})
 
 //this works the same as create server and then will listen to the server creating the eventloop
  app.listen(3000)
